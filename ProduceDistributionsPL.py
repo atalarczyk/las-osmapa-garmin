@@ -2,7 +2,35 @@
 import os
 from osmapa.Map import Map
 import time
+import argparse
 
+parser = argparse.ArgumentParser(description='Build Garmin OSM maps for Poland (cropped to the national border).')
+parser.add_argument("-c", "--coastlinesourcefile", 
+                    help="name for the local coastline file in PBF format (coastlines_europe-latest.osm.pbf if argument not specified)", 
+                    default='coastlines_europe-latest.osm.pbf')
+parser.add_argument("-f", "--mapsourcefile", 
+                    help="name for the local OSM file in PBF format (poland-latest.osm.pbf if argument not specified)", 
+                    default='poland-latest.osm.pbf')
+parser.add_argument("-n", "--nodownload", 
+                    help="do not download OSM source package (expects the file specified by --mapsourcefile to be present)",
+                    action="store_true")
+parser.add_argument("-p", "--publisherid", 
+                    help="publisher ID for output Garmin maps (66 if argument not specified)", 
+                    default='66')
+parser.add_argument("-r", "--maproot", 
+                    help="base directory where the expected file structure is located (normally it is the directory where this script is located; DO NOT SPECIFY UNLESS YOU KNOW WHAT YOU ARE DOING")
+parser.add_argument("-s", "--srtmsourcefile", 
+                    help="name for the local SRTM file in PBF format (srtm_polska.pbf if argument not specified)", 
+                    default='srtm_polska.pbf')
+parser.add_argument("-u", "--mapsourceurl", 
+                    help="name for the remote OSM download URL (https://download.geofabrik.de/europe/poland-latest.osm.pbf if argument not specified)", 
+                    default="https://download.geofabrik.de/europe/poland-latest.osm.pbf")
+parser.add_argument("-v", "--version", 
+                    help="version string for output Garmin maps (V2.03 if argument not specified)", 
+                    default="V2.03")
+args = parser.parse_args()
+
+# Set defaults.
 version = "V2.03"
 src_db_url = "https://download.geofabrik.de/europe/poland-latest.osm.pbf"
 # Alternate URL: https://download.openstreetmap.fr/extracts/europe/poland-latest.osm.pbf
@@ -12,6 +40,18 @@ coastline_pbf_filename = 'coastlines_europe-latest.osm.pbf'
 publisher_id = "66"
 mapa_root = os.path.abspath("./")
 
+
+# Set variables to provided arguments.
+version = args.version
+src_db_url = args.mapsourceurl
+polska_pbf_filename = args.mapsourcefile
+srtm_pbf_filename = args.srtmsourcefile
+coastline_pbf_filename = args.coastlinesourcefile
+publisher_id = args.publisherid
+if (args.maproot != None):
+    mapa_root = args.maproot
+
+# Main routine.
 if __name__ == "__main__":
 
         # OSMapaPL.
@@ -28,9 +68,15 @@ if __name__ == "__main__":
 
         mapGlowna.print_timestamped_message("START.")
         
-        # We fetch new map data only when processing the main map (OSMapaPL). Other maps use the same data. 
-        mapGlowna.print_timestamped_message("Fetching new map data from the OSM server.")
-        mapGlowna.fetch(src_db_url=src_db_url, dest_filename=polska_pbf_filename)
+        if args.nodownload {
+            mapGlowna.print_timestamped_message("Using old map data already fetched from the OSM server at " + polska_pbf_filename + ".")
+        }
+        else {
+            # We fetch new map data only when processing the main map (OSMapaPL). Other maps use the same data. 
+            mapGlowna.print_timestamped_message("Fetching new map data from " + src_db_url + " ...")
+            mapGlowna.fetch(src_db_url=src_db_url, dest_filename=polska_pbf_filename)
+            mapGlowna.print_timestamped_message("Fetched new map data from the OSM server to " + polska_pbf_filename + ".")
+        }
 
         mapGlowna.print_timestamped_message("Splitting.")
         mapGlowna.split()
