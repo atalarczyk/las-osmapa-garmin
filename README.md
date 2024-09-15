@@ -1,7 +1,7 @@
 # osmapa-garmin
 
 A complete environment setup for producing and sharing maps of Poland for Garmin GPS 
-receivers using OpenStreetMap data, called OSMapaPL (available at https://garmin.osmapa.pl).
+receivers using OpenStreetMap data, called OSMapaPL (available at http://osmapa-garmin.las.org.pl).
 
 It consists of a toolchain (mkgmap, mkgmap styles, TYP files and helper scripts) used to compile 
 maps, helper scripts to automate the process and code for a webpage to ditribute the maps.  
