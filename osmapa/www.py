@@ -10,7 +10,7 @@ License: GPLv3.
 import subprocess
 from shutil import move
 
-def refresh_index_html(product_dir, product_list, template_file, target_file):
+def refresh_index_html(product_dir, product_list, template_file, target_file, verbose = False):
     """Find latest versions of map products and produce a correct index.html file from template. 
 
     Args:
@@ -29,6 +29,9 @@ def refresh_index_html(product_dir, product_list, template_file, target_file):
         latest_p_exe = get_latest_product(family=prod_split[0], product=prod_split[1], product_suffix="*.exe", product_dir=product_dir)
         latest_p_img = get_latest_product(family=prod_split[0], product=prod_split[1], product_suffix="*_IMG.zip", product_dir=product_dir)
 
+        if verbose:
+            print("latest_p_exe: " + latest_p_exe + ", latest_p_img: " + latest_p_img)
+            
         if latest_p_exe != None and latest_p_exe != "":
             contents = contents.replace(prod+"-[YYYYMMDD]V[VERSION].exe", latest_p_exe)
         if latest_p_img != None and latest_p_img != "":
@@ -59,10 +62,20 @@ def get_latest_product(family, product, product_suffix, product_dir) -> str:
 
 if __name__ == "__main__":
     import sys
+    import argparse
+    
     primary_def_name = "osmapa.www.refresh_index_html()"
-    if (len(sys.argv) < 5):
-        print("You are trying to run {primary_def_name} as script but not all required parameters have been given. Stop.".format(primary_def_name=primary_def_name))
-    else:
-        print("Running {primary_def_name} as script...".format(primary_def_name=primary_def_name))
-        refresh_index_html(product_dir=sys.argv[1], product_list=sys.argv[2], template_file=sys.argv[3], target_file=sys.argv[4])
-        print("Refreshed {target_file}.".format(target_file=sys.argv[4]))
+    print("Running {primary_def_name} as script...".format(primary_def_name=primary_def_name))
+    
+    parser = argparse.ArgumentParser(description='Process HTML files of Osmap Garmin.')
+    parser.add_argument("-v", "--verbose", help="verbose output", action="store_true")
+    requiredNamed = parser.add_argument_group('required named arguments')
+    requiredNamed.add_argument("-d", "--pdir", help="directory where products are located", required=True)
+    requiredNamed.add_argument("-l", "--plist", help='a list of product names (e.g. "FAMILY-PRODUCT" in FAMILY-PRODUCT-[YYYYMMDD]V[VERSION].exe)', required=True)
+    requiredNamed.add_argument("-t", "--template", help="source index.html file with placeholder tags ([YYYYMMDD] and [VERSION])", required=True)
+    requiredNamed.add_argument("-o", "--output", help="target index.html file to be (over)written after tags have been replaced with values", required=True)
+    args = parser.parse_args()
+
+    refresh_index_html(product_dir=args.pdir, product_list=args.plist, template_file=args.template, target_file=args.output)
+    
+    print("Refreshed {target_file}.".format(args.output))
