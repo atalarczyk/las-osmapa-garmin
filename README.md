@@ -21,7 +21,7 @@ All other tools are present in the `bin/` directory.
 2. Install Java.
 3. In addition to Python 3 and Java, additional tools must be available in the PATH:
     - `zip`
-    - `osmconvert` and `osmfilter`
+    - `osmosis`, `osmconvert` and `osmfilter`
     - `nsis`
 
 Here is how you can install all required components on a Ubuntu system:
@@ -31,7 +31,12 @@ apt install default-jre
 apt install osmctools
 apt install nsis
 ```
-
+If you need to install the tools by hand, please look for binary and source distributions here:
+- osmosis: https://wiki.openstreetmap.org/wiki/Osmosis
+- osmconvert: https://wiki.openstreetmap.org/wiki/Osmconvert
+- osmfilter: https://wiki.openstreetmap.org/wiki/Osmfilter
+- nsis: this one is really difficult to install on Linux with no root access
+- 
 ### Data files
 
 Several required data files are not included in the git repo due to their size. You must fetch them 
