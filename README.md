@@ -1,7 +1,7 @@
 # osmapa-garmin
 
 A complete environment setup for producing and sharing maps of Poland for Garmin GPS 
-receivers using OpenStreetMap data, called OSMapaPL (available at https://garmin.osmapa.pl).
+receivers using OpenStreetMap data, called OSMapaPL (available at [https://osmapa-garmin.las.org.pl/](https://osmapa-garmin.las.org.pl/)).
 
 It consists of a toolchain (mkgmap, mkgmap styles, TYP files and helper scripts) used to compile 
 maps, helper scripts to automate the process and code for a webpage to ditribute the maps.  
@@ -36,7 +36,7 @@ If you need to install the tools by hand, please look for binary and source dist
 - osmosis: https://wiki.openstreetmap.org/wiki/Osmosis
 - osmconvert: https://wiki.openstreetmap.org/wiki/Osmconvert
 - osmfilter: https://wiki.openstreetmap.org/wiki/Osmfilter
-- makensis: this one is really difficult to install on Linux with no root access, no good recipy at the moment, sorry...
+- makensis: this one is really difficult to install on Linux with no root access, no good recipe at the moment, sorry...
 
 ### Data files
 
@@ -58,6 +58,6 @@ See documentation in the `/doc/` directory.
 ## Main contributors
 
 - Michał Rogala - Main project author
-- Andrzej Talarczyk - Maintainer, main author of major rebuild - (@atalarczyk)
+- Andrzej Talarczyk - Maintainer, main author of the major rebuild - (@atalarczyk)
 - Paweł Kosiorek - Visualization updates - (@dodoelk)
 
